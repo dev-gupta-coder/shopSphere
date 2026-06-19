@@ -1,0 +1,1 @@
+// by common folder// Every page will use consistent spacing and headings.
