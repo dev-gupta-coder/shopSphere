@@ -7,7 +7,8 @@ from "@reduxjs/toolkit";
 import {
  loginUser,
  getCurrentUser,
- logoutUser
+ logoutUser,
+ registerUser
 }
 from "../../services/authService";
 
@@ -65,6 +66,31 @@ createAsyncThunk(
    );
   }
  }
+);
+
+
+
+export const register =
+createAsyncThunk(
+
+  "auth/register",
+
+  async (userData, thunkAPI) => {
+
+    try {
+
+      return await registerUser(
+        userData
+      );
+
+    } catch (error) {
+
+      return thunkAPI
+        .rejectWithValue(
+          error.response?.data?.message
+        );
+    }
+  }
 );
 
 
@@ -191,7 +217,38 @@ createSlice({
 
   state.isAuthenticated =
   false;
- });
+ })
+ 
+ .addCase(
+  register.pending,
+  (state) => {
+
+    state.loading = true;
+    state.error = null;
+  }
+)
+
+.addCase(
+  register.fulfilled,
+  (state, action) => {
+
+    state.loading = false;
+
+    state.user =
+      action.payload.data.user;
+
+    state.isAuthenticated = true;
+  }
+)
+
+.addCase(
+  register.rejected,
+  (state, action) => {
+
+    state.loading = false;
+    state.error = action.payload;
+  }
+);
  }
 });
 

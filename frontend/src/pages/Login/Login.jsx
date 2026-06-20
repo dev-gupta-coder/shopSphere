@@ -58,13 +58,8 @@ function Login() {
       );
 
     console.log(result);
-
-
     
     console.log(result.payload);
-await dispatch(
- login(formData)
-);
 
 
     if (
